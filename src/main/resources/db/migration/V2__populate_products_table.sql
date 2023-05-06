@@ -1,7 +1,7 @@
-INSERT INTO products (name, image_url, description, price, quantity)
+INSERT INTO products (name, image_url, description, categori, price, quantity)
 VALUES
-    ('Diesel car', '../static/photo/bugatti.jpg', 'Bugatti', 1000000, 10),
-    ('Diesel car', '../static/photo/mercedes.jpg', 'Mercedes', 254001, 50),
-    ('Diesel car', '../static/photo/lamborghini.jpg', 'Lamborghini', 235400, 25),
-    ('Diesel car', '../static/photo/ferrari.jpg', 'Ferrari', 878400, 20),
-    ('Electric car', '../static/photo/tesla.jpg', 'Tesla', 102000, 1500);
+    ('Bugatti'    , '../static/photo/bugatti.jpg'    , 'Diesel car'   ,'Diesel'  , 1000000, 10),
+    ('Mercedes'   , '../static/photo/mercedes.jpg'   , 'Diesel car'   ,'Gas'     , 254001,  50),
+    ('Lamborghini', '../static/photo/lamborghini.jpg', 'Diesel Diesel','Diesel'  , 235400,  25),
+    ('Ferrari'    , '../static/photo/ferrari.jpg'    , 'Diesel car'   ,'Gas'     , 878400,  20),
+    ('Tesla'      , '../static/photo/tesla.jpg'      , 'Electric car' ,'Electric', 102000,  1500);

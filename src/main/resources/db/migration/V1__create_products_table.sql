@@ -3,6 +3,7 @@ CREATE TABLE products (
                           name VARCHAR(255) NOT NULL,
                           image_url VARCHAR(255),
                           description TEXT,
+                          category TEXT,
                           price DECIMAL(10,2) NOT NULL,
                           quantity INTEGER NOT NULL,
                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
