@@ -1,25 +1,18 @@
 package com.example.onlinestore.dto;
 
-import com.example.onlinestore.entity.Product;
-import com.example.onlinestore.entity.User;
 import lombok.*;
 
-@Builder
+import java.math.BigDecimal;
+
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductDto {
     private String name;
-    private String image;
+    private String imageUrl;
     private String description;
-    private int quantity;
-    private Double price;
-
-    public static ProductDto from (Product product){
-        return builder()
-                .name(product.getName())
-                .image(product.getImage())
-                .description(product.getDescription())
-                .quantity(product.getQuantity())
-                .price(product.getPrice())
-                .build();
-    }
+    private String category;
+    private Integer quantity;
+    private BigDecimal price;
 }

@@ -9,8 +9,9 @@ public class ProductMapper {
     public static ProductDto fromPerson(Product product) {
         return ProductDto.builder()
                 .name(product.getName())
-                .image(product.getImage())
+                .imageUrl(product.getImageUrl())
                 .description(product.getDescription())
+                .category(product.getCategory())
                 .quantity(product.getQuantity())
                 .price(product.getPrice())
                 .build();
