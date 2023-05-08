@@ -1,31 +1,34 @@
 package com.example.onlinestore.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
+import java.math.BigDecimal;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Table(name = "cart_items")
 public class CartItem {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cart_id", nullable = false, referencedColumnName = "id")
     private Cart cart;
 
-    private int quantity;
-    private double price;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
-    public CartItem() {}
+    @Column(name = "quantity")
+    private Integer quantity;
 
-    public CartItem(Product product, int quantity) {
-        this.product = product;
-        this.quantity = quantity;
-        this.price = product.getPrice() * quantity;
-    }
-
+    @Column(name = "price")
+    private BigDecimal price;
 }
