@@ -1,6 +1,7 @@
 package com.example.onlinestore.controller;
 
 import com.example.onlinestore.dto.OrderDto;
+import com.example.onlinestore.dto.UserDto;
 import com.example.onlinestore.entity.User;
 import com.example.onlinestore.mapper.OrderMapper;
 import com.example.onlinestore.service.OrderService;
@@ -32,9 +33,9 @@ public class OrderController {
                 .collect(Collectors.toList());
     }
     @GetMapping("/{email}/orders")
-    public ResponseEntity<List<OrderDto>> getUserOrders(@PathVariable String  email) {
-        User user = userService.findUserByEmailForOrder(email);
-        List<OrderDto> orders = orderService.getUserOrders(user);
+    public ResponseEntity<List<OrderDto>> getUserOrders(@PathVariable String email) {
+        User userDto = userService.findUserByEmailForOrder(email);
+        List<OrderDto> orders = orderService.getUserOrders(userDto);
         return ResponseEntity.ok(orders);
     }
 }

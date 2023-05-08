@@ -1,13 +1,20 @@
 package com.example.onlinestore.service;
 
 import com.example.onlinestore.dto.UserDto;
+
+import com.example.onlinestore.dto.UserRegisterDto;
 import com.example.onlinestore.entity.User;
+import com.example.onlinestore.mapper.ReviewMapper;
 import com.example.onlinestore.mapper.UserMapper;
+import com.example.onlinestore.mapper.UserRegisterMapper;
 import com.example.onlinestore.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -15,16 +22,7 @@ public class UserService {
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
 
-    public User saveUser(String name, String userName, String email, String password) {
-        var user = User.builder()
-                .name(name)
-                .userName(userName)
-                .email(email)
-                .password(password)
-                .build();
-        return userRepository.save(user);
     }
 
     public List<User> getAllUsers() {
@@ -34,6 +32,11 @@ public class UserService {
     public UserDto findUserByEmail(String email) {
         return UserMapper.fromPerson(userRepository.findByEmail(email));
     }
+    public Optional<UserDto> findUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.map(UserMapper::fromPerson);
+    }
+
     public User findUserByEmailForOrder(String email) {
         return userRepository.findByEmail(email);
     }
@@ -52,12 +55,25 @@ public class UserService {
         return UserMapper.fromPerson(userRepository.findByUserNameContainingIgnoreCase(username));
     }
 
-    public UserDto createUser(User user) {
-        return UserMapper.fromPerson(userRepository.save(user));
+    public UserRegisterDto createUser(UserRegisterDto user) {
+        var usr = User.builder()
+                .name(user.getName())
+                .userName(user.getUserName())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .build();
+        return UserRegisterMapper.fromPerson(userRepository.save(usr));
     }
 
-    public UserDto updateUser(User user) {
-        return UserMapper.fromPerson(userRepository.save(user));
+    public UserRegisterDto updateUser(UserRegisterDto userDto) {
+        User user = userRepository.findById(userDto.getId()).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+        user.setUserName(userDto.getUserName());
+        user.setPassword(userDto.getPassword());
+
+        User updatedUser = userRepository.save(user);
+        return UserRegisterMapper.fromPerson(updatedUser);
     }
 
     public boolean isUserExistsByEmail(String email) {

@@ -18,7 +18,7 @@ public class CartItem {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "cart_id", nullable = false, referencedColumnName = "id")
     private Cart cart;
 
