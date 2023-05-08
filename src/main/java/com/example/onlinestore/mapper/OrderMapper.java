@@ -8,9 +8,10 @@ import org.springframework.stereotype.Component;
 public class OrderMapper {
     public static OrderDto fromPerson(Order order) {
         return OrderDto.builder()
-                .userId(order.getUserId())
-                .productId(order.getProductId())
-                .quantity(order.getQuantity())
+                .userId(order.getUser().getId())
+                .createdAt(order.getCreatedAt())
+                .status(order.getStatus())
+                .total(order.getTotal())
                 .build();
     }
 }

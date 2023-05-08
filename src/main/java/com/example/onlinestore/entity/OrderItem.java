@@ -1,21 +1,31 @@
 package com.example.onlinestore.entity;
 
-import javax.persistence.*;
+import lombok.*;
 
+import javax.persistence.*;
+import java.math.BigDecimal;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "order_items")
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
     private Order order;
+
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
-    @Column(nullable = false)
-    private Double price;
-    @Column(nullable = false)
-    private int quantity;
+
+    @Column(name = "quantity")
+    private Integer quantity;
+
+    @Column(name = "price")
+    private BigDecimal price;
 }
