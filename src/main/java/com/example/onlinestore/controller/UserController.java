@@ -3,8 +3,6 @@ package com.example.onlinestore.controller;
 import com.example.onlinestore.dto.UserDto;
 import com.example.onlinestore.entity.User;
 import com.example.onlinestore.mapper.UserMapper;
-import com.example.onlinestore.service.CartService;
-import com.example.onlinestore.service.OrderService;
 import com.example.onlinestore.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +17,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-    private final CartService cartService;
-    private final OrderService orderService;
 
-    public UserController(UserService userService, CartService cartService, OrderService orderService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.cartService = cartService;
-        this.orderService = orderService;
     }
 //    @PostMapping("/register")
 //    public ResponseEntity<UserDto> addPerson(@RequestBody User user) {

@@ -1,7 +1,6 @@
 package com.example.onlinestore.controller;
 
 import com.example.onlinestore.dto.ProductDto;
-import com.example.onlinestore.entity.Product;
 import com.example.onlinestore.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
