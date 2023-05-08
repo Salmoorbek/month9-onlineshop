@@ -4,6 +4,8 @@ import com.example.onlinestore.dto.UserDto;
 import com.example.onlinestore.entity.User;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class UserMapper {
     public static UserDto fromPerson(User user) {
