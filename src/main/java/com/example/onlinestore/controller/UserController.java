@@ -2,7 +2,6 @@ package com.example.onlinestore.controller;
 
 import com.example.onlinestore.dto.UserDto;
 import com.example.onlinestore.dto.UserRegisterDto;
-import com.example.onlinestore.entity.User;
 import com.example.onlinestore.mapper.UserMapper;
 import com.example.onlinestore.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -10,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +27,7 @@ public class UserController {
     @GetMapping("/users")
     public List<UserDto> getAllUsers() {
         return userService.getAllUsers().stream()
-                .map(UserMapper::fromPerson)
+                .map(UserMapper::from)
                 .collect(Collectors.toList());
     }
 
@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserRegisterDto> createUser(@RequestBody UserRegisterDto user) {
+    public ResponseEntity<UserRegisterDto> createUser(@Valid @RequestBody UserRegisterDto user) {
         if (userService.isUserExistsByEmail(user.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } else {

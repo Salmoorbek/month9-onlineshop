@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ReviewMapper {
-    public static ReviewDto fromPerson(Review review) {
+    public static ReviewDto from(Review review) {
         return ReviewDto.builder()
                 .userId(review.getUser().getId())
                 .productId(review.getProduct().getId())

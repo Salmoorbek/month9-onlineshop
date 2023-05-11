@@ -1,14 +1,12 @@
 package com.example.onlinestore.mapper;
 
-import com.example.onlinestore.dto.CartDto;
 import com.example.onlinestore.dto.CartItemDto;
-import com.example.onlinestore.entity.Cart;
 import com.example.onlinestore.entity.CartItem;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CartItemMapper {
-    public static CartItemDto fromPerson(CartItem cart) {
+    public static CartItemDto from(CartItem cart) {
         return CartItemDto.builder()
                 .cartId(cart.getCart().getId())
                 .productId(cart.getProduct().getId())

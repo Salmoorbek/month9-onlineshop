@@ -21,7 +21,7 @@ public class CartItemService {
         List<CartItem> cartItems = cartItemRepository.selectCartItemsByCartId(cartId);
         List<CartItemDto> cartItemDtos = new ArrayList<>();
         for (CartItem cartItem : cartItems) {
-            cartItemDtos.add(CartItemMapper.fromPerson(cartItem));
+            cartItemDtos.add(CartItemMapper.from(cartItem));
         }
         return cartItemDtos;
     }

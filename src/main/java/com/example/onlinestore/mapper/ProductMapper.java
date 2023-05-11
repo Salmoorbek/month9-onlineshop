@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProductMapper {
-    public static ProductDto fromPerson(Product product) {
+    public static ProductDto from(Product product) {
         return ProductDto.builder()
                 .name(product.getName())
                 .imageUrl(product.getImageUrl())

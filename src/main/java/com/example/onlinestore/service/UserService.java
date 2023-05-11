@@ -4,7 +4,6 @@ import com.example.onlinestore.dto.UserDto;
 
 import com.example.onlinestore.dto.UserRegisterDto;
 import com.example.onlinestore.entity.User;
-import com.example.onlinestore.mapper.ReviewMapper;
 import com.example.onlinestore.mapper.UserMapper;
 import com.example.onlinestore.mapper.UserRegisterMapper;
 import com.example.onlinestore.repositories.UserRepository;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -30,11 +28,11 @@ public class UserService {
     }
 
     public UserDto findUserByEmail(String email) {
-        return UserMapper.fromPerson(userRepository.findByEmail(email));
+        return UserMapper.from(userRepository.findByEmail(email));
     }
     public Optional<UserDto> findUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
-        return user.map(UserMapper::fromPerson);
+        return user.map(UserMapper::from);
     }
 
     public User findUserByEmailForOrder(String email) {
@@ -52,7 +50,7 @@ public class UserService {
     }
 
     public UserDto searchUsersByUsername(String username) {
-        return UserMapper.fromPerson(userRepository.findByUserNameContainingIgnoreCase(username));
+        return UserMapper.from(userRepository.findByUserNameContainingIgnoreCase(username));
     }
 
     public UserRegisterDto createUser(UserRegisterDto user) {
@@ -62,7 +60,7 @@ public class UserService {
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .build();
-        return UserRegisterMapper.fromPerson(userRepository.save(usr));
+        return UserRegisterMapper.from(userRepository.save(usr));
     }
 
     public UserRegisterDto updateUser(UserRegisterDto userDto) {
@@ -73,7 +71,7 @@ public class UserService {
         user.setPassword(userDto.getPassword());
 
         User updatedUser = userRepository.save(user);
-        return UserRegisterMapper.fromPerson(updatedUser);
+        return UserRegisterMapper.from(updatedUser);
     }
 
     public boolean isUserExistsByEmail(String email) {

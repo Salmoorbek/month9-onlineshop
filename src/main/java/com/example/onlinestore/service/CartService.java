@@ -1,7 +1,6 @@
 package com.example.onlinestore.service;
 
 import com.example.onlinestore.dto.CartDto;
-import com.example.onlinestore.dto.UserDto;
 import com.example.onlinestore.entity.Cart;
 import com.example.onlinestore.entity.User;
 import com.example.onlinestore.mapper.CartMapper;
@@ -20,7 +19,7 @@ public class CartService {
     public List<CartDto> getUserCarts(User user) {
         List<CartDto> cartDtos = new ArrayList<>();
         for (Cart cart : cartRepository.findAllByUser(user)) {
-            cartDtos.add(CartMapper.fromPerson(cart));
+            cartDtos.add(CartMapper.from(cart));
         }
         return cartDtos;
     }

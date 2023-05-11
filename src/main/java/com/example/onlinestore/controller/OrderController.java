@@ -1,7 +1,6 @@
 package com.example.onlinestore.controller;
 
 import com.example.onlinestore.dto.OrderDto;
-import com.example.onlinestore.dto.UserDto;
 import com.example.onlinestore.entity.User;
 import com.example.onlinestore.mapper.OrderMapper;
 import com.example.onlinestore.service.OrderService;
@@ -29,7 +28,7 @@ public class OrderController {
     @GetMapping("/orders")
     public List<OrderDto> getAllProducts(){
         return orderService.getAllProducts().stream()
-                .map(OrderMapper::fromPerson)
+                .map(OrderMapper::from)
                 .collect(Collectors.toList());
     }
     @GetMapping("/{email}/orders")

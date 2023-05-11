@@ -1,7 +1,6 @@
 package com.example.onlinestore.service;
 
 import com.example.onlinestore.dto.OrderDto;
-import com.example.onlinestore.dto.UserDto;
 import com.example.onlinestore.entity.Order;
 import com.example.onlinestore.entity.User;
 import com.example.onlinestore.mapper.OrderMapper;
@@ -22,7 +21,7 @@ public class OrderService {
     }
     public List<OrderDto> getUserOrders(User user) {
         List<Order> orders = orderRepository.findAllByUser(user);
-        List<OrderDto> orderDtos = orders.stream().map(OrderMapper::fromPerson).collect(Collectors.toList());
+        List<OrderDto> orderDtos = orders.stream().map(OrderMapper::from).collect(Collectors.toList());
         return orderDtos;
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OrderMapper {
-    public static OrderDto fromPerson(Order order) {
+    public static OrderDto from(Order order) {
         return OrderDto.builder()
                 .userId(order.getUser().getId())
                 .createdAt(order.getCreatedAt())

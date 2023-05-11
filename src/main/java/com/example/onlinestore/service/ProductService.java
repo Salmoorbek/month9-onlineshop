@@ -18,31 +18,31 @@ public class ProductService {
 
     public Page<ProductDto> getAllProducts(Pageable pageable) {
         Page<Product> products = productRepository.findAllByOrderByNameAsc(pageable);
-        return products.map(ProductMapper::fromPerson);
+        return products.map(ProductMapper::from);
     }
 
     public Page<ProductDto> getProductsSortedByPrice(Pageable pageable) {
         Page<Product> products = productRepository.findAllByOrderByPriceAsc(pageable);
-        return products.map(ProductMapper::fromPerson);
+        return products.map(ProductMapper::from);
     }
 
     public Page<ProductDto> getProductsByCategory(String category, Pageable pageable) {
         Page<Product> products = productRepository.findAllByCategoryOrderByPriceAsc(category, pageable);
-        return products.map(ProductMapper::fromPerson);
+        return products.map(ProductMapper::from);
     }
 
     public Page<ProductDto> searchProductsByName(String name, Pageable pageable) {
         Page<Product> products = productRepository.findAllByNameContainingIgnoreCaseOrderByNameAsc(name, pageable);
-        return products.map(ProductMapper::fromPerson);
+        return products.map(ProductMapper::from);
     }
 
     public Page<ProductDto> searchProductsByPrice(BigDecimal price, Pageable pageable) {
         Page<Product> products = productRepository.findAllByPriceLessThanEqualOrderByPriceAsc(price, pageable);
-        return products.map(ProductMapper::fromPerson);
+        return products.map(ProductMapper::from);
     }
 
     public Page<ProductDto> searchProductsByNameAndCategory(String name, String category, Pageable pageable) {
         Page<Product> products = productRepository.findAllByNameContainingIgnoreCaseAndCategoryOrderByNameAsc(name, category, pageable);
-        return products.map(ProductMapper::fromPerson);
+        return products.map(ProductMapper::from);
     }
 }
