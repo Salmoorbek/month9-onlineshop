@@ -4,16 +4,23 @@ VALUES
     ('Salmoor2', 'salmor2', 'salmoor2@example.com', 'qwerty456'),
     ('Salmoor3', 'salmor3', 'salmoor3h@example.com', '123qwe');
 
-INSERT INTO products (name, image_url, description, category, price, quantity)
+INSERT INTO categories (title)
+VALUES  ('Electric'),
+        ('Diesel'),
+        ('Gas'),
+        ('H2O');
+
+INSERT INTO products (name, image_url, description, category_id, price, quantity)
 VALUES
-    ('Bugatti'    , '../static/photo/bugatti.jpg'    , 'Diesel car'   ,'Diesel'  , 1000000, 10),
-    ('Mercedes'   , '../static/photo/mercedes.jpg'   , 'Diesel car'   ,'Gas'     , 254001,  50),
-    ('Lamborghini', '../static/photo/lamborghini.jpg', 'Diesel Diesel','Diesel'  , 235400,  25),
-    ('Ferrari'    , '../static/photo/ferrari.jpg'    , 'Diesel car'   ,'Gas'     , 878400,  20),
-    ('Tesla'      , '../static/photo/tesla.jpg'      , 'Electric car' ,'Electric', 102000,  1500);
+    ('Bugatti'    , '../static/photo/bugatti.jpg'    , 'Diesel car'   , 1, 1000000, 10),
+    ('Mercedes'   , '../static/photo/mercedes.jpg'   , 'Diesel car'   , 2, 254001 ,  50),
+    ('Lamborghini', '../static/photo/lamborghini.jpg', 'Diesel Diesel', 3, 235400 ,  25),
+    ('Ferrari'    , '../static/photo/ferrari.jpg'    , 'Diesel car'   , 4, 878400 ,  20),
+    ('Tesla'      , '../static/photo/tesla.jpg'      , 'Electric car' , 1, 102000 ,  1500);
 
 INSERT INTO carts (user_id)
 VALUES (1), (2);
+
 
 INSERT INTO cart_items (cart_id, product_id, quantity, price)
 VALUES (1, 1, 2, 50000.00),

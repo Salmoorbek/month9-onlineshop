@@ -6,15 +6,22 @@ CREATE TABLE usr (
                      password VARCHAR(255)
 );
 
+create table categories (
+                            id BIGSERIAL NOT NULL ,
+                            title varchar(255),
+                            primary key (id)
+);
+
 CREATE TABLE products (
                           id BIGSERIAL PRIMARY KEY,
                           name VARCHAR(255),
                           image_url VARCHAR(255),
                           description TEXT,
-                          category VARCHAR(255),
+                          category_id BIGINT REFERENCES categories(id) NOT NULL,
                           quantity INT,
                           price DECIMAL(10,2)
 );
+
 
 CREATE TABLE carts (
                        id BIGSERIAL PRIMARY KEY,

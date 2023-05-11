@@ -28,8 +28,9 @@ public class Product {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "category")
-    private String category;
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private Category category;
 
     @Column(name = "quantity")
     private Integer quantity;
