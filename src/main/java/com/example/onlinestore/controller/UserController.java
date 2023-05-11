@@ -2,9 +2,10 @@ package com.example.onlinestore.controller;
 
 import com.example.onlinestore.dto.UserDto;
 import com.example.onlinestore.dto.UserRegisterDto;
+import com.example.onlinestore.exception.UserAlreadyExistsException;
+import com.example.onlinestore.exception.UserNotFoundException;
 import com.example.onlinestore.mapper.UserMapper;
 import com.example.onlinestore.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -33,7 +34,7 @@ public class UserController {
 
     @GetMapping("/search_by_name")
     public ResponseEntity<List<UserDto>> searchUsersByName(
-            @RequestParam(required = false) String name) {
+            @Valid @RequestParam(required = false) String name) {
         if (name != null) {
             return ResponseEntity.ok(userService.searchUsersByName(name));
         } else {
@@ -43,7 +44,7 @@ public class UserController {
 
     @GetMapping("/search_by_user_name")
     public ResponseEntity<UserDto> searchUserByUserName(
-            @RequestParam(required = false) String username) {
+            @Valid @RequestParam(required = false) String username) {
         if (username != null) {
             return ResponseEntity.ok(userService.searchUsersByUsername(username));
         } else {
@@ -53,7 +54,7 @@ public class UserController {
 
     @GetMapping("/search_by_email")
     public ResponseEntity<UserDto> searchUserByUserEmail(
-            @RequestParam(required = false) String email) {
+            @Valid @RequestParam(required = false) String email) {
         if (email != null) {
             return ResponseEntity.ok(userService.searchUsersByUsername(email));
         } else {
@@ -64,7 +65,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserRegisterDto> createUser(@Valid @RequestBody UserRegisterDto user) {
         if (userService.isUserExistsByEmail(user.getEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            throw new UserAlreadyExistsException("User with email " + user.getEmail() + " already exists");
         } else {
             UserRegisterDto savedUser = userService.createUser(user);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{email}")
@@ -72,26 +73,24 @@ public class UserController {
             return ResponseEntity.created(location).body(savedUser);
         }
     }
-
     @PutMapping("/{id}")
-    public ResponseEntity<UserRegisterDto> updateUser(@PathVariable Long id, @RequestBody UserRegisterDto user) {
+    public ResponseEntity<UserRegisterDto> updateUser(@Valid @PathVariable Long id, @RequestBody UserRegisterDto user) {
         Optional<UserDto> existingUser = userService.findUserById(id);
         if (existingUser.isPresent()) {
             user.setId(id);
             UserRegisterDto updatedUser = userService.updateUser(user);
             return ResponseEntity.ok(updatedUser);
         } else {
-            return ResponseEntity.notFound().build();
+            throw new UserNotFoundException("User with ID " + id + " not found");
         }
     }
-
     @GetMapping("/check/{email}")
-    public ResponseEntity<String> checkUserExistsByEmail(@PathVariable String email) {
+    public ResponseEntity<String> checkUserExistsByEmail(@Valid @PathVariable String email) {
         boolean exists = userService.isUserExistsByEmail(email);
         if (exists) {
             return ResponseEntity.ok("User with email " + email + " exists");
         } else {
-            return ResponseEntity.notFound().build();
+            throw new UserNotFoundException("User with email " + email + " not found");
         }
     }
 }

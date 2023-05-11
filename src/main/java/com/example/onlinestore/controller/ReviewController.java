@@ -2,6 +2,8 @@ package com.example.onlinestore.controller;
 
 import com.example.onlinestore.dto.ProductDto;
 import com.example.onlinestore.dto.ReviewDto;
+import com.example.onlinestore.exception.ProductNotFoundException;
+import com.example.onlinestore.exception.ReviewNotFoundException;
 import com.example.onlinestore.service.ReviewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +22,19 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
     @GetMapping("/{id}")
-    public ResponseEntity<ReviewDto> getReviewById(@PathVariable Long id) {
+    public ResponseEntity<ReviewDto> getReviewById(@Valid @PathVariable Long id) {
         Optional<ReviewDto> reviewDtoOptional = reviewService.searchReviewById(id);
         return reviewDtoOptional
                 .map(reviewDto -> new ResponseEntity<>(reviewDto, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ReviewNotFoundException("Review not found"));
     }
     @GetMapping("/product/{productId}")
-    public ResponseEntity<List<ReviewDto>> getReviewsByProduct(@PathVariable Long productId) {
+    public ResponseEntity<List<ReviewDto>> getReviewsByProduct(@Valid @PathVariable Long productId) {
         ProductDto product = new ProductDto(productId);
         List<ReviewDto> reviews = reviewService.searchReviewByProduct(product);
+        if (reviews.isEmpty()) {
+            throw new ProductNotFoundException("Product not found");
+        }
         return ResponseEntity.ok(reviews);
     }
     @PostMapping

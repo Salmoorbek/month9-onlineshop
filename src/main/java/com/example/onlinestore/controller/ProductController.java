@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 
 @RestController
@@ -18,7 +19,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/all")
-    public ResponseEntity<Page<ProductDto>> getAllProducts(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<Page<ProductDto>> getAllProducts(@Valid @RequestParam(defaultValue = "0") int page,
                                                            @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ProductDto> products = productService.getAllProducts(pageable);
@@ -26,7 +27,7 @@ public class ProductController {
     }
 
     @GetMapping("/sorted")
-    public ResponseEntity<Page<ProductDto>> getProductsSortedByPrice(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<Page<ProductDto>> getProductsSortedByPrice(@Valid @RequestParam(defaultValue = "0") int page,
                                                                   @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ProductDto> products = productService.getProductsSortedByPrice(pageable);
@@ -34,7 +35,7 @@ public class ProductController {
     }
 
     @GetMapping("/category")
-    public ResponseEntity<Page<ProductDto>> getProductsByCategory(@RequestParam String category,
+    public ResponseEntity<Page<ProductDto>> getProductsByCategory(@Valid @RequestParam String category,
                                                                @RequestParam(defaultValue = "0") int page,
                                                                @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -43,7 +44,7 @@ public class ProductController {
     }
 
     @GetMapping("/name")
-    public ResponseEntity<Page<ProductDto>> searchProductsByName(@RequestParam String name,
+    public ResponseEntity<Page<ProductDto>> searchProductsByName(@Valid @RequestParam String name,
                                                               @RequestParam(defaultValue = "0") int page,
                                                               @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -52,7 +53,7 @@ public class ProductController {
     }
 
     @GetMapping("/price")
-    public ResponseEntity<Page<ProductDto>> searchProductsByPrice(@RequestParam BigDecimal price,
+    public ResponseEntity<Page<ProductDto>> searchProductsByPrice( @Valid@RequestParam BigDecimal price,
                                                                @RequestParam(defaultValue = "0") int page,
                                                                @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -61,7 +62,7 @@ public class ProductController {
     }
 
     @GetMapping("/name-category")
-    public ResponseEntity<Page<ProductDto>> searchProductsByNameAndCategory(@RequestParam String name,
+    public ResponseEntity<Page<ProductDto>> searchProductsByNameAndCategory(@Valid @RequestParam String name,
                                                                          @RequestParam String category,
                                                                          @RequestParam(defaultValue = "0") int page,
                                                                          @RequestParam(defaultValue = "10") int size) {

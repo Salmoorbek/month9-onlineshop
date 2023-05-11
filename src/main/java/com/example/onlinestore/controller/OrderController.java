@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ public class OrderController {
                 .collect(Collectors.toList());
     }
     @GetMapping("/{email}/orders")
-    public ResponseEntity<List<OrderDto>> getUserOrders(@PathVariable String email) {
+    public ResponseEntity<List<OrderDto>> getUserOrders(@Valid  @PathVariable String email) {
         User userDto = userService.findUserByEmailForOrder(email);
         List<OrderDto> orders = orderService.getUserOrders(userDto);
         return ResponseEntity.ok(orders);

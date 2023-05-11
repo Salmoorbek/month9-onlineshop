@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,7 +22,7 @@ public class CartItemController {
     }
 
     @GetMapping("/cart-items/{cartId}")
-    public ResponseEntity<List<CartItemDto>> getCartItemByCartId(@PathVariable Long cartId) {
+    public ResponseEntity<List<CartItemDto>> getCartItemByCartId(@Valid @PathVariable Long cartId) {
         List<CartItemDto> cartItemDtos = cartItemService.getCartItemByCartId(cartId);
         if (!cartItemDtos.isEmpty()) {
             return ResponseEntity.ok(cartItemDtos);
