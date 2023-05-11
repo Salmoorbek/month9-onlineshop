@@ -28,16 +28,16 @@ public class ProductController {
 
     @GetMapping("/sorted")
     public ResponseEntity<Page<ProductDto>> getProductsSortedByPrice(@Valid @RequestParam(defaultValue = "0") int page,
-                                                                  @RequestParam(defaultValue = "10") int size) {
+                                                                     @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ProductDto> products = productService.getProductsSortedByPrice(pageable);
         return ResponseEntity.ok(products);
     }
 
     @GetMapping("/category")
-    public ResponseEntity<Page<ProductDto>> getProductsByCategory(@Valid @RequestParam String category,
-                                                               @RequestParam(defaultValue = "0") int page,
-                                                               @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<Page<ProductDto>> getProductsByCategory(@Valid @RequestParam Long category,
+                                                                  @RequestParam(defaultValue = "0") int page,
+                                                                  @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ProductDto> products = productService.getProductsByCategory(category, pageable);
         return ResponseEntity.ok(products);
@@ -45,8 +45,8 @@ public class ProductController {
 
     @GetMapping("/name")
     public ResponseEntity<Page<ProductDto>> searchProductsByName(@Valid @RequestParam String name,
-                                                              @RequestParam(defaultValue = "0") int page,
-                                                              @RequestParam(defaultValue = "10") int size) {
+                                                                 @RequestParam(defaultValue = "0") int page,
+                                                                 @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ProductDto> products = productService.searchProductsByName(name, pageable);
         return ResponseEntity.ok(products);
@@ -54,8 +54,8 @@ public class ProductController {
 
     @GetMapping("/price")
     public ResponseEntity<Page<ProductDto>> searchProductsByPrice( @Valid@RequestParam BigDecimal price,
-                                                               @RequestParam(defaultValue = "0") int page,
-                                                               @RequestParam(defaultValue = "10") int size) {
+                                                                   @RequestParam(defaultValue = "0") int page,
+                                                                   @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ProductDto> products = productService.searchProductsByPrice(price, pageable);
         return ResponseEntity.ok(products);
@@ -63,9 +63,9 @@ public class ProductController {
 
     @GetMapping("/name-category")
     public ResponseEntity<Page<ProductDto>> searchProductsByNameAndCategory(@Valid @RequestParam String name,
-                                                                         @RequestParam String category,
-                                                                         @RequestParam(defaultValue = "0") int page,
-                                                                         @RequestParam(defaultValue = "10") int size) {
+                                                                            @RequestParam Long category,
+                                                                            @RequestParam(defaultValue = "0") int page,
+                                                                            @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ProductDto> products = productService.searchProductsByNameAndCategory(name, category, pageable);
         return ResponseEntity.ok(products);

@@ -1,5 +1,6 @@
 package com.example.onlinestore.repositories;
 
+import com.example.onlinestore.entity.Category;
 import com.example.onlinestore.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,11 +13,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findAllByOrderByPriceAsc(Pageable pageable);
 
-    Page<Product> findAllByCategoryOrderByPriceAsc(String category, Pageable pageable);
-
     Page<Product> findAllByNameContainingIgnoreCaseOrderByNameAsc(String name, Pageable pageable);
 
     Page<Product> findAllByPriceLessThanEqualOrderByPriceAsc(BigDecimal price, Pageable pageable);
 
-    Page<Product> findAllByNameContainingIgnoreCaseAndCategoryOrderByNameAsc(String name, String category, Pageable pageable);
+    Page<Product> findAllByNameContainingIgnoreCaseAndCategoryIdOrderByNameAsc(String name, Long category, Pageable pageable);
+
+    Page<Product> findByCategory(Category category, Pageable pageable);
 }

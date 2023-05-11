@@ -2,14 +2,13 @@ package com.example.onlinestore.controller;
 
 import com.example.onlinestore.dto.OrderDto;
 import com.example.onlinestore.entity.User;
+import com.example.onlinestore.exception.UserNotFoundException;
 import com.example.onlinestore.mapper.OrderMapper;
 import com.example.onlinestore.service.OrderService;
 import com.example.onlinestore.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -34,7 +33,12 @@ public class OrderController {
     }
     @GetMapping("/{email}/orders")
     public ResponseEntity<List<OrderDto>> getUserOrders(@Valid  @PathVariable String email) {
-        User userDto = userService.findUserByEmailForOrder(email);
+        User userDto;
+        try {
+            userDto = userService.findUserByEmailForOrder(email);
+        } catch (UserNotFoundException ex) {
+            throw new UserNotFoundException("User not found");
+        }
         List<OrderDto> orders = orderService.getUserOrders(userDto);
         return ResponseEntity.ok(orders);
     }
