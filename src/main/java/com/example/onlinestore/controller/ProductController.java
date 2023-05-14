@@ -17,6 +17,10 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+    @GetMapping("/")
+    public String getMainPage(){
+        return "index";
+    }
 
     @GetMapping("/all")
     public ResponseEntity<Page<ProductDto>> getAllProducts(@Valid @RequestParam(defaultValue = "0") int page,
@@ -61,13 +65,12 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/name-category")
-    public ResponseEntity<Page<ProductDto>> searchProductsByNameAndCategory(@Valid @RequestParam String name,
-                                                                            @RequestParam Long category,
-                                                                            @RequestParam(defaultValue = "0") int page,
-                                                                            @RequestParam(defaultValue = "10") int size) {
+    @GetMapping("/description")
+    public ResponseEntity<Page<ProductDto>> searchProductsByDescription(@Valid @RequestParam String description,
+                                                                        @RequestParam(defaultValue = "0") int page,
+                                                                        @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductDto> products = productService.searchProductsByNameAndCategory(name, category, pageable);
+        Page<ProductDto> products = productService.searchProductsByDescription(description, pageable);
         return ResponseEntity.ok(products);
     }
 }

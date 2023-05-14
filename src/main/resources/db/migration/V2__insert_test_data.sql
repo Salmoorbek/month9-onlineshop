@@ -12,11 +12,21 @@ VALUES  ('Electric'),
 
 INSERT INTO products (name, image_url, description, category_id, price, quantity)
 VALUES
-    ('Bugatti'    , '../static/photo/bugatti.jpg'    , 'Diesel car'   , 1, 1000000, 10),
-    ('Mercedes'   , '../static/photo/mercedes.jpg'   , 'Diesel car'   , 2, 254001 ,  50),
-    ('Lamborghini', '../static/photo/lamborghini.jpg', 'Diesel Diesel', 3, 235400 ,  25),
-    ('Ferrari'    , '../static/photo/ferrari.jpg'    , 'Diesel car'   , 4, 878400 ,  20),
-    ('Tesla'      , '../static/photo/tesla.jpg'      , 'Electric car' , 1, 102000 ,  1500);
+    ('Bugatti'    , '/photo/bugatti.jpg'            , 'chiron'              , 1, 1000000, 10),
+    ('Mercedes'   , '/photo/mercedes.jpg'           , 'amg'                 , 2, 254001 ,  50),
+    ('Lamborghini', '/photo/lamborghini.jpg'        , 'hurricane'           , 3, 235400 ,  25),
+    ('Ferrari'    , '/photo/ferrari.jpg'            , 'f49'                 , 4, 878400 ,  20),
+    ('Tesla'      , '/photo/tesla.jpg'              , 'model X'             , 1, 102000 ,  1500),
+    ('Kia'        , '/photo/kia.jpg'                , 'K5'                  , 1, 10000  ,  9000),
+    ('Hyundai'    , '/photo/sonata.jpg'             , 'sonata'              , 2, 14000  ,  500),
+    ('Toyota'     , '/photo/camry70.jpg'            , 'camry70'             , 3, 235400 ,  25),
+    ('Toyota'     , '/photo/camry50.jpg'            , 'solaris'             , 4, 878400 ,  20),
+    ('Toyota'     , '/photo/landcruiser200.jpg'     , 'land cruiser 200'    , 1, 102000 ,  1500),
+    ('Acura'      , '/photo/acura.jpg'              , 'tsx'                 , 1, 1000000, 10),
+    ('Lexus'      , '/photo/lx600.jpg'              , 'lx600'               , 2, 254001 ,  50),
+    ('Lexus'      , '/photo/ls500h.jpg'             , 'ls500h'              , 3, 235400 ,  25),
+    ('Lexus'      , '/photo/RX-500hFSPORT.jpg'      , 'RX-500hF-SPORT'      , 4, 878400 ,  20),
+    ('Mercedes'   , '/photo/mclaren.jpg'            , 'MacLaren'            , 1, 102000 ,  1500);
 
 INSERT INTO carts (user_id)
 VALUES (1), (2);

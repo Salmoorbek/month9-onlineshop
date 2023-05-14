@@ -50,8 +50,8 @@ public class ProductService {
         return products.map(ProductMapper::from);
     }
 
-    public Page<ProductDto> searchProductsByNameAndCategory(String name, Long category, Pageable pageable) {
-        Page<Product> products = productRepository.findAllByNameContainingIgnoreCaseAndCategoryIdOrderByNameAsc(name, category, pageable);
+    public Page<ProductDto> searchProductsByDescription(String description, Pageable pageable) {
+        Page<Product> products = productRepository.findByDescriptionContainingIgnoreCase(description, pageable);
         return products.map(ProductMapper::from);
     }
 }

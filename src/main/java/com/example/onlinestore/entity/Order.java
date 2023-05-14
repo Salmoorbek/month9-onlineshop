@@ -26,7 +26,8 @@ public class Order {
     private LocalDateTime createdAt;
 
     @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @Column(name = "total")
     private BigDecimal total;

@@ -10,7 +10,7 @@ public class OrderMapper {
         return OrderDto.builder()
                 .userId(order.getUser().getId())
                 .createdAt(order.getCreatedAt())
-                .status(order.getStatus())
+                .status(order.getStatus().name())
                 .total(order.getTotal())
                 .build();
     }
