@@ -22,7 +22,7 @@ public class UserRegisterDto {
     private String name;
 
     @NotBlank
-    private String userName;
+    private String username;
 
     @NotBlank
     @Email

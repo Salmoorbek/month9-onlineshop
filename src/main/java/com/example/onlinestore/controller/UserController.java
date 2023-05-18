@@ -6,18 +6,23 @@ import com.example.onlinestore.exception.UserAlreadyExistsException;
 import com.example.onlinestore.exception.UserNotFoundException;
 import com.example.onlinestore.mapper.UserMapper;
 import com.example.onlinestore.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping("/users")
+@Controller
 public class UserController {
     private final UserService userService;
 
@@ -25,36 +30,50 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/login")
+    public String getLoginPage(@RequestParam(required = false, defaultValue = "false") Boolean error, Model model) {
+        model.addAttribute("error", error);
+        return "login";
+    }
+    @GetMapping("/register")
+    public String getRegistrationPage(Model model){
+        model.addAttribute("dto", new UserRegisterDto());
+        return "register";
+    }
+    @PostMapping(value = "/register")
+    public String register(@Valid UserRegisterDto user,
+                           BindingResult validationResult,
+                           RedirectAttributes attributes){
+
+        if (validationResult.hasFieldErrors()) {
+            attributes.addFlashAttribute("errors", validationResult.getFieldErrors());
+            return "redirect:/register";
+        }
+
+        userService.createUser(user);
+        return "redirect:/login";
+    }
+
+    @GetMapping(value = "/api/users")
     public List<UserDto> getAllUsers() {
         return userService.getAllUsers().stream()
                 .map(UserMapper::from)
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/search_by_name")
+    @GetMapping(value = "/api/users/name/{name}")
     public ResponseEntity<List<UserDto>> searchUsersByName(
-            @Valid @RequestParam(required = false) String name) {
+            @Valid @PathVariable String name) {
         if (name != null) {
-            return ResponseEntity.ok(userService.searchUsersByName(name));
+            return ResponseEntity.ok(userService.findByName(name));
         } else {
             return ResponseEntity.badRequest().build();
         }
     }
 
-    @GetMapping("/search_by_user_name")
-    public ResponseEntity<UserDto> searchUserByUserName(
-            @Valid @RequestParam(required = false) String username) {
-        if (username != null) {
-            return ResponseEntity.ok(userService.searchUsersByUsername(username));
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @GetMapping("/search_by_email")
+    @GetMapping(value = "/api/users/email/{email}")
     public ResponseEntity<UserDto> searchUserByUserEmail(
-            @Valid @RequestParam(required = false) String email) {
+            @Valid @PathVariable String email) {
         if (email != null) {
             return ResponseEntity.ok(userService.searchUsersByUsername(email));
         } else {
@@ -62,17 +81,6 @@ public class UserController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<UserRegisterDto> createUser(@Valid @RequestBody UserRegisterDto user) {
-        if (userService.isUserExistsByEmail(user.getEmail())) {
-            throw new UserAlreadyExistsException("User with email " + user.getEmail() + " already exists");
-        } else {
-            UserRegisterDto savedUser = userService.createUser(user);
-            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{email}")
-                    .buildAndExpand(savedUser.getEmail()).toUri();
-            return ResponseEntity.created(location).body(savedUser);
-        }
-    }
     @PutMapping("/{id}")
     public ResponseEntity<UserRegisterDto> updateUser(@Valid @PathVariable Long id, @RequestBody UserRegisterDto user) {
         Optional<UserDto> existingUser = userService.findUserById(id);

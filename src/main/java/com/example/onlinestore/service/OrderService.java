@@ -19,9 +19,9 @@ public class OrderService {
     public List<Order> getAllProducts(){
         return orderRepository.findAll();
     }
-    public List<OrderDto> getUserOrders(User user) {
-        List<Order> orders = orderRepository.findAllByUser(user);
-        List<OrderDto> orderDtos = orders.stream().map(OrderMapper::from).collect(Collectors.toList());
-        return orderDtos;
+    public List<OrderDto> getUserOrders(String email) {
+        return orderRepository.findUserOrders(email).stream()
+                .map(OrderMapper::from)
+                .collect(Collectors.toList());
     }
 }

@@ -54,4 +54,15 @@ public class ProductService {
         Page<Product> products = productRepository.findByDescriptionContainingIgnoreCase(description, pageable);
         return products.map(ProductMapper::from);
     }
+
+    public Page<ProductDto> searchProducts(String name, String description, BigDecimal price, Long categoryId, Pageable pageable) {
+        Page<Product> productPage;
+        if (categoryId != null && name == null && description == null && price == null) {
+
+            productPage = productRepository.findByCategoryId(categoryId, pageable);
+        } else {
+            productPage = productRepository.findBySearchParams(name, description, price, categoryId, pageable);
+        }
+        return productPage.map(ProductMapper::from);
+    }
 }

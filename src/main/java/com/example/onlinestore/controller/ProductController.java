@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,17 +39,8 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/category")
-    public ResponseEntity<Page<ProductDto>> getProductsByCategory(@Valid @RequestParam Long category,
-                                                                  @RequestParam(defaultValue = "0") int page,
-                                                                  @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<ProductDto> products = productService.getProductsByCategory(category, pageable);
-        return ResponseEntity.ok(products);
-    }
-
-    @GetMapping("/name")
-    public ResponseEntity<Page<ProductDto>> searchProductsByName(@Valid @RequestParam String name,
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Page<ProductDto>> searchProductsByName(@Valid @PathVariable String name,
                                                                  @RequestParam(defaultValue = "0") int page,
                                                                  @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -73,4 +65,30 @@ public class ProductController {
         Page<ProductDto> products = productService.searchProductsByDescription(description, pageable);
         return ResponseEntity.ok(products);
     }
+    @GetMapping("/category")
+    public ResponseEntity<Page<ProductDto>> getProductsByCategory(@Valid @RequestParam(required = false) Long category,
+                                                                  @RequestParam(defaultValue = "0") int page,
+                                                                  @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductDto> products = productService.getProductsByCategory(category, pageable);
+        return ResponseEntity.ok(products);
+    }
+
+//    @GetMapping("/search")
+//    public ResponseEntity<Page<ProductDto>> searchProducts(@Valid @RequestParam(required = false) String name,
+//                                                           @RequestParam(required = false) String description,
+//                                                           @RequestParam(required = false) BigDecimal price,
+//                                                           @RequestParam(required = false) Long category,
+//                                                           @RequestParam(required = false) String sort,
+//                                                           @RequestParam(defaultValue = "0") int page,
+//                                                           @RequestParam(defaultValue = "10") int size) {
+//        Pageable pageable;
+//        if (sort != null) {
+//            pageable = PageRequest.of(page, size, Sort.by(sort));
+//        } else {
+//            pageable = PageRequest.of(page, size);
+//        }
+//        Page<ProductDto> products = productService.searchProducts(name, description, price, category, pageable);
+//        return ResponseEntity.ok(products);
+//    }
 }

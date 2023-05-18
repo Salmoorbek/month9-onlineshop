@@ -1,49 +1,61 @@
 package com.example.onlinestore.configuration;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 @Configuration
-@EnableWebSecurity
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
     private final DataSource dataSource;
 
     @Bean
-    public BCryptPasswordEncoder encoder() {
+    public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .passwordEncoder(new BCryptPasswordEncoder())
-                .usersByUsernameQuery("SELECT email, password, enabled FROM users WHERE email = ?;")
-                .authoritiesByUsernameQuery("SELECT email, role from users WHERE email = ?");
-    }
-
-    @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .anyRequest()
-                .permitAll();
 
         http.formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/")
-                .permitAll();
+                .failureUrl("/login?error=true");
 
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.httpBasic();
-        http.csrf().disable();
+        http.logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true);
+
+        http.authorizeRequests()
+                .antMatchers("/profile")
+                .authenticated();
+
+        http.authorizeRequests()
+                .anyRequest()
+                .permitAll();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        String fetchUsersQuery = "select email, password, enabled"
+                + " from usr"
+                + " where email = ?";
+
+        String fetchRolesQuery = "select email, role"
+                + " from usr"
+                + " where email = ?";
+
+        auth.jdbcAuthentication()
+                .usersByUsernameQuery(fetchUsersQuery)
+                .authoritiesByUsernameQuery(fetchRolesQuery)
+                .dataSource(dataSource);
     }
 }

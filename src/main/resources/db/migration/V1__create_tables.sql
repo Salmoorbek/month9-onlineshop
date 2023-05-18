@@ -3,7 +3,9 @@ CREATE TABLE usr (
                      name VARCHAR(255),
                      user_name VARCHAR(255),
                      email VARCHAR(255),
-                     password VARCHAR(255)
+                     password VARCHAR(255),
+                     role VARCHAR(255) NOT NULL,
+                     enabled BOOLEAN NOT NULL
 );
 
 create table categories (

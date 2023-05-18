@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,5 +23,11 @@ public class CartService {
             cartDtos.add(CartMapper.from(cart));
         }
         return cartDtos;
+    }
+
+    public List<CartDto> findShoppingCart(String email) {
+        return cartRepository.findCartByUser(email).stream()
+                .map(CartMapper::from)
+                .collect(Collectors.toList());
     }
 }

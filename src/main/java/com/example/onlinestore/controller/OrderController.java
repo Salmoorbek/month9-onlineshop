@@ -8,21 +8,20 @@ import com.example.onlinestore.service.OrderService;
 import com.example.onlinestore.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping("/order")
+@Controller
 public class OrderController {
     private final OrderService orderService;
-    private final UserService userService;
 
-    public OrderController(OrderService orderService, UserService userService) {
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
-        this.userService = userService;
     }
 
     @GetMapping("/orders")
@@ -31,15 +30,9 @@ public class OrderController {
                 .map(OrderMapper::from)
                 .collect(Collectors.toList());
     }
-    @GetMapping("/{email}/orders")
-    public ResponseEntity<List<OrderDto>> getUserOrders(@Valid  @PathVariable String email) {
-        User userDto;
-        try {
-            userDto = userService.findUserByEmailForOrder(email);
-        } catch (UserNotFoundException ex) {
-            throw new UserNotFoundException("User not found");
-        }
-        List<OrderDto> orders = orderService.getUserOrders(userDto);
-        return ResponseEntity.ok(orders);
+    @GetMapping("/api/user_orders")
+    public ResponseEntity<List<OrderDto>> findUserOrders(Principal principal){
+        String email = principal.getName();
+        return new ResponseEntity<>(orderService.getUserOrders(email),HttpStatus.OK);
     }
 }

@@ -9,7 +9,7 @@ public class UserRegisterMapper {
     public static UserRegisterDto from(User user) {
         return UserRegisterDto.builder()
                 .name(user.getName())
-                .userName(user.getUserName())
+                .username(user.getUsername())
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .build();
