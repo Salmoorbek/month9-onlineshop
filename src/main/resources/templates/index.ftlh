@@ -27,6 +27,11 @@
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </div>
             </form>
+
+            <form action="/logout" method="post">
+                <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!'--no-token--'}" />
+                <button type="submit" class="btn btn-primary">Logout</button>
+            </form>
         </div>
     </div>
 </nav>

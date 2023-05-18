@@ -43,6 +43,15 @@ function renderCars() {
         const carPrice = document.createElement('p');
         carPrice.textContent = `Price: $${car.price}`;
         carCard.appendChild(carPrice);
+
+        const addToCartButton = document.createElement('button');
+        addToCartButton.textContent = 'Add to card';
+        addToCartButton.className = 'btn btn-primary';
+        addToCartButton.addEventListener('click', () => {
+            addToCart(car);
+        });
+        carCard.appendChild(addToCartButton);
+
         carsContainer.appendChild(carCard);
     });
 }

@@ -2,22 +2,22 @@ package com.example.onlinestore.controller;
 
 import com.example.onlinestore.dto.UserDto;
 import com.example.onlinestore.dto.UserRegisterDto;
-import com.example.onlinestore.exception.UserAlreadyExistsException;
 import com.example.onlinestore.exception.UserNotFoundException;
 import com.example.onlinestore.mapper.UserMapper;
 import com.example.onlinestore.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.net.URI;
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,6 +33,7 @@ public class UserController {
     @GetMapping("/login")
     public String getLoginPage(@RequestParam(required = false, defaultValue = "false") Boolean error, Model model) {
         model.addAttribute("error", error);
+        model.addAttribute("userAuthenticated", SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
         return "login";
     }
     @GetMapping("/register")
@@ -54,6 +55,14 @@ public class UserController {
         return "redirect:/login";
     }
 
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
+        return "redirect:/login";
+    }
     @GetMapping(value = "/api/users")
     public List<UserDto> getAllUsers() {
         return userService.getAllUsers().stream()

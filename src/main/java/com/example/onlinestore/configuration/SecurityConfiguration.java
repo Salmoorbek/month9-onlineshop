@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import javax.sql.DataSource;
 @Configuration
@@ -28,19 +29,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .failureUrl("/login?error=true");
 
-        http.logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-                .clearAuthentication(true)
-                .invalidateHttpSession(true);
+//        http.logout()
+//                .logoutUrl("/logout")
+//                .logoutSuccessUrl("/")
+//                .clearAuthentication(true)
+//                .invalidateHttpSession(true);
 
         http.authorizeRequests()
-                .antMatchers("/profile")
-                .authenticated();
+                .antMatchers("/profile").authenticated()
+                .antMatchers("/api/orders/add").authenticated()
+                .antMatchers("/api/carts/items/**").authenticated();
 
         http.authorizeRequests()
                 .anyRequest()
                 .permitAll();
+
+        http.csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
     }
 
     @Override

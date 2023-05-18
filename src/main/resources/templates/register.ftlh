@@ -11,7 +11,7 @@
 <div class="registration-page">
 
     <div class="form">
-        <form class="register-form" method="POST" action="/signup" >
+        <form class="register-form" method="POST" action="/register" >
             <input type="hidden" name="_csrf" value="${_csrf.token}" />
             <div>
                 <#if errorMessage?has_content>
