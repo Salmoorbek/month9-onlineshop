@@ -1,7 +1,9 @@
 package com.example.onlinestore.service;
 
 import com.example.onlinestore.dto.CartItemDto;
+import com.example.onlinestore.entity.Cart;
 import com.example.onlinestore.entity.CartItem;
+import com.example.onlinestore.entity.User;
 import com.example.onlinestore.mapper.CartItemMapper;
 import com.example.onlinestore.repositories.CartItemRepository;
 import org.springframework.stereotype.Service;

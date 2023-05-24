@@ -33,8 +33,16 @@ public class UserController {
     @GetMapping("/login")
     public String getLoginPage(@RequestParam(required = false, defaultValue = "false") Boolean error, Model model) {
         model.addAttribute("error", error);
-        model.addAttribute("userAuthenticated", SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
         return "login";
+    }
+    @GetMapping("/")
+    public String getIndexPage(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated()) {
+            String userEmail = authentication.getName();
+            model.addAttribute("userEmail", userEmail);
+        }
+        return "index";
     }
     @GetMapping("/register")
     public String getRegistrationPage(Model model){

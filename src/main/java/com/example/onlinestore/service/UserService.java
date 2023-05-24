@@ -40,10 +40,6 @@ public class UserService implements UserDetailsService {
         return user.map(UserMapper::from);
     }
 
-//    public User findUserByEmailForOrder(String email) {
-//        return userRepository.findByEmail(email);
-//    }
-
 
     public UserDto searchUsersByUsername(String username) {
         return UserMapper.from(userRepository.findByUsernameContainingIgnoreCase(username));
@@ -99,18 +95,9 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
-    public UserDto findByEmail(String email){
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        if (userOptional.isEmpty()) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        User user = userOptional.get();
-        return UserMapper.from(user);
-    }
-
-    public UserDto getByEmail(String email) {
+    public User getUserByEmail(String email) {
         var user = userRepository.findByEmail(email)
                 .orElseThrow();
-        return UserMapper.from(user);
+        return user;
     }
 }

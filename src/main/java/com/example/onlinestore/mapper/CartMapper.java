@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 public class CartMapper {
     public static CartDto from(Cart cart) {
         return CartDto.builder()
-                .userId(cart.getId())
+                .id(cart.getId())
+                .userId(cart.getUser().getId())
+                .cartItems(null)
                 .build();
     }
 }

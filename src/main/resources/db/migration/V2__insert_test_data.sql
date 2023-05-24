@@ -1,8 +1,8 @@
 INSERT INTO usr (name, user_name, email, password, role, enabled)
 VALUES
-    ('Salmoor', 'salmor1', 'salmoor@example.com', 'password123','user',true),
-    ('Salmoor2', 'salmor2', 'salmoor2@example.com', 'qwerty456','user',true),
-    ('Salmoor3', 'salmor3', 'salmoor3h@example.com', '123qwe',  'user',true);
+    ('Salmoor', 'salmor1', 'salmoor@example.com', '$2a$10$cxWIKm8ILPuE8IEpw2jsJ.FjiiSW8T2Qy6HdYE0T/yHzBE/kYRygq','user',true),
+    ('Salmoor2', 'salmor2', 'ss@ss.s', '$2a$10$cxWIKm8ILPuE8IEpw2jsJ.FjiiSW8T2Qy6HdYE0T/yHzBE/kYRygq','user',true),
+    ('Salmoor3', 'salmor3', 'salmoor3h@example.com', '$2a$10$cxWIKm8ILPuE8IEpw2jsJ.FjiiSW8T2Qy6HdYE0T/yHzBE/kYRygq',  'user',true);
 
 INSERT INTO categories (title)
 VALUES  ('Electric'),
@@ -35,7 +35,7 @@ VALUES (1), (2);
 INSERT INTO cart_items (cart_id, product_id, quantity, price)
 VALUES (1, 1, 2, 50000.00),
        (1, 2, 1, 35000.00),
-       (2, 1, 1, 25000.00);
+       (2, 4, 1, 25000.00);
 
 INSERT INTO orders (user_id, status, total)
 VALUES (1, 'Pending', 100000.00),

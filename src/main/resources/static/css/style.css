@@ -1,36 +1,41 @@
-#container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-.car-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 400px;
-    width: 305px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.navbar {
+    background-color: #333;
+    color: #fff;
     padding: 10px;
-    margin: 10px;
-}
-.pagination {
     display: flex;
-    justify-content: center;
-    margin-top: 20px;
+    justify-content: space-between;
+    align-items: center;
 }
-.pagination a {
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.navbar li {
+    float: left;
+}
+
+.navbar li a {
     display: block;
-    padding: 5px 10px;
-    margin-right: 5px;
-    border: 1px solid #ccc;
-}
-.pagination a.active {
-    background-color: #ccc;
-}
-.car-card img {
-    width: 98%;
+    color: #fff;
     text-align: center;
-    height: 300px;
-    object-fit: cover;
+    padding: 10px;
+    text-decoration: none;
+}
+
+.navbar li a:hover {
+    background-color: #555;
+}
+
+.navbar-icons {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-icons i {
+    margin: 0 5px;
+    color: #fff;
 }

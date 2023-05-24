@@ -8,11 +8,16 @@ import com.example.onlinestore.repositories.CategoryRepository;
 import com.example.onlinestore.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,9 +50,14 @@ public class ProductService {
         return products.map(ProductMapper::from);
     }
 
-    public Page<ProductDto> searchProductsByPrice(BigDecimal price, Pageable pageable) {
-        Page<Product> products = productRepository.findAllByPriceLessThanEqualOrderByPriceAsc(price, pageable);
-        return products.map(ProductMapper::from);
+    public Page<ProductDto> searchProductsByPrice(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
+        Page<Product> productPage = productRepository.findByPriceBetween(minPrice, maxPrice, pageable);
+        List<ProductDto> productDtos = productPage.getContent()
+                .stream()
+                .map(ProductMapper::from)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(productDtos, pageable, productPage.getTotalElements());
     }
 
     public Page<ProductDto> searchProductsByDescription(String description, Pageable pageable) {
@@ -55,14 +65,8 @@ public class ProductService {
         return products.map(ProductMapper::from);
     }
 
-    public Page<ProductDto> searchProducts(String name, String description, BigDecimal price, Long categoryId, Pageable pageable) {
-        Page<Product> productPage;
-        if (categoryId != null && name == null && description == null && price == null) {
-
-            productPage = productRepository.findByCategoryId(categoryId, pageable);
-        } else {
-            productPage = productRepository.findBySearchParams(name, description, price, categoryId, pageable);
-        }
-        return productPage.map(ProductMapper::from);
+    public ProductDto getProductDtoById(Long productId) {
+        return ProductMapper.from(productRepository.findById(productId)
+                .orElseThrow(() -> new NoSuchElementException("Product not found with id: " + productId)));
     }
 }

@@ -20,12 +20,12 @@ public class CartItem {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "cart_id", nullable = false, referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "cart_id", referencedColumnName = "id")
     private Cart cart;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @Column(name = "quantity")

@@ -1,38 +1,52 @@
 package com.example.onlinestore.controller;
 
-import com.example.onlinestore.dto.OrderDto;
+import com.example.onlinestore.entity.CartItem;
+import com.example.onlinestore.entity.Order;
 import com.example.onlinestore.entity.User;
-import com.example.onlinestore.exception.UserNotFoundException;
-import com.example.onlinestore.mapper.OrderMapper;
+import com.example.onlinestore.service.CartService;
 import com.example.onlinestore.service.OrderService;
 import com.example.onlinestore.service.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class OrderController {
     private final OrderService orderService;
+    private final CartService cartService;
+    private final UserService userService;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, CartService cartService, UserService userService) {
         this.orderService = orderService;
+        this.cartService = cartService;
+        this.userService = userService;
     }
 
-    @GetMapping("/orders")
-    public List<OrderDto> getAllProducts(){
-        return orderService.getAllProducts().stream()
-                .map(OrderMapper::from)
-                .collect(Collectors.toList());
+    @PostMapping("/orders/create")
+    public String createOrder(Principal principal) {
+        User user = userService.getUserByEmail(principal.getName());
+
+        List<CartItem> cartItems = cartService.getCartItemsForUser(user);
+
+        Order order = orderService.createOrder(user, cartItems);
+
+        cartService.clearCartForUser(user);
+
+        return "redirect:/orders/" + order.getId();
     }
-    @GetMapping("/api/user_orders")
-    public ResponseEntity<List<OrderDto>> findUserOrders(Principal principal){
-        String email = principal.getName();
-        return new ResponseEntity<>(orderService.getUserOrders(email),HttpStatus.OK);
+    @GetMapping("/orders/{id}")
+    public String getOrder(@PathVariable Long id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = null;
+        if (authentication.isAuthenticated()) {
+            userEmail = authentication.getName();
+            model.addAttribute("userEmail", userEmail);
+        }
+        return "carts";
     }
 }

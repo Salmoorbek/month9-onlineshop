@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 @Builder
 public class CartItemDto {
     @NotNull
+    private Long id;
+    @NotNull
     private Long cartId;
 
     @NotNull

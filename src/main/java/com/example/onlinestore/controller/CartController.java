@@ -2,37 +2,125 @@ package com.example.onlinestore.controller;
 
 import com.example.onlinestore.dto.CartDto;
 import com.example.onlinestore.dto.CartItemDto;
+import com.example.onlinestore.dto.ProductDto;
+import com.example.onlinestore.service.CartItemService;
 import com.example.onlinestore.service.CartService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
+import com.example.onlinestore.service.ProductService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.security.Principal;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class CartController {
     private final CartService cartService;
+    private final CartItemService cartItemService;
+    private final ProductService productService;
 
-    public CartController(CartService cartService) {
+    public CartController(CartService cartService, CartItemService cartItemService, ProductService productService) {
         this.cartService = cartService;
-    }
-    @GetMapping("/api/carts/{email}")
-    public ResponseEntity<List<CartDto>> getUserCarts(@Valid @PathVariable String email) {
-        return new ResponseEntity<>(cartService.findCart(email), HttpStatus.OK);
+        this.cartItemService = cartItemService;
+        this.productService = productService;
     }
 
-    @PostMapping("/api/carts/items/add")
-    public ResponseEntity<Boolean> addItemToCart(@Valid @RequestBody CartItemDto cartItemDto, Principal principal){
-        String email = principal.getName();
-        return new ResponseEntity<>(cartService.addToCart(cartItemDto, email),HttpStatus.OK);
+    @GetMapping("/carts")
+    public String getCartPage(Model model, HttpSession session) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = null;
+        if (authentication.isAuthenticated()) {
+            userEmail = authentication.getName();
+            model.addAttribute("userEmail", userEmail);
+        }
+
+        CartDto cart = (CartDto) session.getAttribute("cart");
+
+        if (cart == null) {
+            cart = cartService.getCartByUserEmail(userEmail);
+            session.setAttribute("cart", cart);
+        }
+
+        List<CartItemDto> cartItems = cartItemService.getCartItemByCartId(cart.getId());
+
+        List<ProductDto> products = new ArrayList<>();
+        for (CartItemDto cartItem : cartItems) {
+            ProductDto product = productService.getProductDtoById(cartItem.getProductId());
+            products.add(product);
+        }
+
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("products", products);
+
+        return "carts";
     }
 
-    @PostMapping("/api/carts/items/delete")
-    public ResponseEntity<Boolean> deleteItemFromCart(@Valid @RequestBody CartItemDto cartItemDto, Principal principal){
-        String email = principal.getName();
-        return new ResponseEntity<>(cartService.deleteFromCart(cartItemDto, email),HttpStatus.OK);
+    @PostMapping("/carts/carts/items/remove")
+    public String removeItemFromCart(@RequestParam("cartItemId") Long cartItemId, HttpSession session) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = null;
+        if (authentication.isAuthenticated()) {
+            userEmail = authentication.getName();
+        }
+
+        CartDto cart = (CartDto) session.getAttribute("cart");
+
+        if (cart != null) {
+            cartService.removeItemFromCart(userEmail, cartItemId);
+            List<CartItemDto> cartItems = cartItemService.getCartItemByCartId(cart.getId());
+            cart.setCartItems(cartItems);
+
+            session.setAttribute("cart", cart);
+        }
+
+        return "redirect:/carts";
+    }
+
+    @PostMapping("/carts/carts/items/add")
+    public String addItemToCart(@RequestParam("productId") Long productId, HttpSession session) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = null;
+        if (authentication.isAuthenticated()) {
+            userEmail = authentication.getName();
+        }
+
+        CartDto cart = (CartDto) session.getAttribute("cart");
+
+        if (cart == null) {
+            cart = cartService.getCartByUserEmail(userEmail);
+            session.setAttribute("cart", cart);
+        }
+        cartService.addItemToCart(cart.getId(), productId);
+
+        return "redirect:/carts";
+    }
+    @PostMapping("/carts/carts/items/update")
+    public String updateCartItemQuantity(@RequestBody Map<String, Object> requestMap,
+                                         HttpSession session) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = null;
+        if (authentication.isAuthenticated()) {
+            userEmail = authentication.getName();
+        }
+
+        CartDto cart = (CartDto) session.getAttribute("cart");
+
+        if (cart != null) {
+            Long cartItemId = Long.parseLong(requestMap.get("cartItemId").toString());
+            Integer quantity = Integer.parseInt(requestMap.get("quantity").toString());
+
+            cartService.updateCartItemQuantity(userEmail, cartItemId, quantity);
+            List<CartItemDto> cartItems = cartItemService.getCartItemByCartId(cart.getId());
+            cart.setCartItems(cartItems);
+
+            session.setAttribute("cart", cart);
+        }
+
+        return "redirect:/carts";
     }
 }

@@ -24,21 +24,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.formLogin()
                 .loginPage("/login")
                 .failureUrl("/login?error=true");
 
-//        http.logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/")
-//                .clearAuthentication(true)
-//                .invalidateHttpSession(true);
-
         http.authorizeRequests()
+                .antMatchers("/carts/carts/items/remove").authenticated()
                 .antMatchers("/profile").authenticated()
-                .antMatchers("/api/orders/add").authenticated()
-                .antMatchers("/api/carts/items/**").authenticated();
+                .antMatchers("/cart").authenticated()
+                .antMatchers("/orders/add").authenticated()
+                .antMatchers("/carts/**").authenticated();
 
         http.authorizeRequests()
                 .anyRequest()
@@ -46,6 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+
     }
 
     @Override
