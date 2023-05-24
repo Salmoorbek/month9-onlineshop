@@ -5,7 +5,8 @@ CREATE TABLE usr (
                      email VARCHAR(255),
                      password VARCHAR(255),
                      role VARCHAR(255) NOT NULL,
-                     enabled BOOLEAN NOT NULL
+                     enabled BOOLEAN NOT NULL,
+                     reset_token VARCHAR(255) NOT NULL
 );
 
 create table categories (

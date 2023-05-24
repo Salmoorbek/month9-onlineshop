@@ -1,8 +1,8 @@
-INSERT INTO usr (name, user_name, email, password, role, enabled)
+INSERT INTO usr (name, user_name, email, password, role, enabled, reset_token)
 VALUES
-    ('Salmoor', 'salmor1', 'salmoor@example.com', '$2a$10$cxWIKm8ILPuE8IEpw2jsJ.FjiiSW8T2Qy6HdYE0T/yHzBE/kYRygq','user',true),
-    ('Salmoor2', 'salmor2', 'ss@ss.s', '$2a$10$cxWIKm8ILPuE8IEpw2jsJ.FjiiSW8T2Qy6HdYE0T/yHzBE/kYRygq','user',true),
-    ('Salmoor3', 'salmor3', 'salmoor3h@example.com', '$2a$10$cxWIKm8ILPuE8IEpw2jsJ.FjiiSW8T2Qy6HdYE0T/yHzBE/kYRygq',  'user',true);
+    ('Salmoor', 'salmor1', 'salmoor@example.com', '$2a$10$cxWIKm8ILPuE8IEpw2jsJ.FjiiSW8T2Qy6HdYE0T/yHzBE/kYRygq','user',true, ''),
+    ('Salmoor2', 'salmor2', 'ss@ss.s', '$2a$10$cxWIKm8ILPuE8IEpw2jsJ.FjiiSW8T2Qy6HdYE0T/yHzBE/kYRygq','user',true, ''),
+    ('Salmoor3', 'salmor3', 'salmoor3h@example.com', '$2a$10$cxWIKm8ILPuE8IEpw2jsJ.FjiiSW8T2Qy6HdYE0T/yHzBE/kYRygq',  'user',true, '');
 
 INSERT INTO categories (title)
 VALUES  ('Electric'),
