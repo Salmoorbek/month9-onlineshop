@@ -16,6 +16,11 @@
             </#if>
         </div>
 
+        <div>
+            <#if password?? >
+                <p style="color:black">Your new password: ${password}</p>
+            </#if>
+        </div>
         <form class="login-form" method="POST" action="/login">
             <input type="hidden" name="_csrf" value="${_csrf.token}" />
             <input type="text" placeholder="email" name="username" value=""/>

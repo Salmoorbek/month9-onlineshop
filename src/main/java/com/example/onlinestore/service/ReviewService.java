@@ -11,6 +11,7 @@ import com.example.onlinestore.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,11 +22,15 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final UserService userService;
+    private final ProductService productService;
 
-    public ReviewService(ReviewRepository reviewRepository, UserRepository userRepository, ProductRepository productRepository) {
+    public ReviewService(ReviewRepository reviewRepository, UserRepository userRepository, ProductRepository productRepository, UserService userService, ProductService productService) {
         this.reviewRepository = reviewRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
+        this.userService = userService;
+        this.productService = productService;
     }
 
     public Optional<ReviewDto> searchReviewById(Long id){
@@ -53,5 +58,21 @@ public class ReviewService {
 
         var savedReview = reviewRepository.save(review);
         return ReviewMapper.from(savedReview);
+    }
+
+    public void addComments(String comments, Long clothesId, String name) {
+        var user = userService.getUserByEmail(name);
+        Optional<Product> optionalProduct = productRepository.findById(clothesId);
+
+        optionalProduct.ifPresent(product -> {
+            var com = Review.builder()
+                    .text(comments)
+                    .product(product)
+                    .user(user)
+                    .createdAt(LocalDateTime.now())
+                    .rating(5)
+                    .build();
+            reviewRepository.save(com);
+        });
     }
 }

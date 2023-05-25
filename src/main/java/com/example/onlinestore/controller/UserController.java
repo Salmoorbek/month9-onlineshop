@@ -1,11 +1,7 @@
 package com.example.onlinestore.controller;
 
-import com.example.onlinestore.dto.UserDto;
 import com.example.onlinestore.dto.UserRegisterDto;
-import com.example.onlinestore.exception.UserNotFoundException;
-import com.example.onlinestore.mapper.UserMapper;
 import com.example.onlinestore.service.UserService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -18,9 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -71,51 +64,5 @@ public class UserController {
         }
         return "redirect:/login";
     }
-    @GetMapping(value = "/api/users")
-    public List<UserDto> getAllUsers() {
-        return userService.getAllUsers().stream()
-                .map(UserMapper::from)
-                .collect(Collectors.toList());
-    }
 
-    @GetMapping(value = "/api/users/name/{name}")
-    public ResponseEntity<List<UserDto>> searchUsersByName(
-            @Valid @PathVariable String name) {
-        if (name != null) {
-            return ResponseEntity.ok(userService.findByName(name));
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @GetMapping(value = "/api/users/email/{email}")
-    public ResponseEntity<UserDto> searchUserByUserEmail(
-            @Valid @PathVariable String email) {
-        if (email != null) {
-            return ResponseEntity.ok(userService.searchUsersByUsername(email));
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<UserRegisterDto> updateUser(@Valid @PathVariable Long id, @RequestBody UserRegisterDto user) {
-        Optional<UserDto> existingUser = userService.findUserById(id);
-        if (existingUser.isPresent()) {
-            user.setId(id);
-            UserRegisterDto updatedUser = userService.updateUser(user);
-            return ResponseEntity.ok(updatedUser);
-        } else {
-            throw new UserNotFoundException("User with ID " + id + " not found");
-        }
-    }
-    @GetMapping("/check/{email}")
-    public ResponseEntity<String> checkUserExistsByEmail(@Valid @PathVariable String email) {
-        boolean exists = userService.isUserExistsByEmail(email);
-        if (exists) {
-            return ResponseEntity.ok("User with email " + email + " exists");
-        } else {
-            throw new UserNotFoundException("User with email " + email + " not found");
-        }
-    }
 }

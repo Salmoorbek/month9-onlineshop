@@ -1,6 +1,9 @@
 package com.example.onlinestore.service;
 
+import com.example.onlinestore.dto.OrderDto;
 import com.example.onlinestore.entity.*;
+import com.example.onlinestore.mapper.CartMapper;
+import com.example.onlinestore.mapper.OrderMapper;
 import com.example.onlinestore.repositories.OrderItemRepository;
 import com.example.onlinestore.repositories.OrderRepository;
 import org.springframework.stereotype.Service;
@@ -9,7 +12,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -47,6 +51,19 @@ public class OrderService {
         orderItemRepository.saveAll(orderItems);
 
         return order;
+    }
+
+    public List<OrderDto> getOrderByUserEmail(String email) {
+        List<OrderDto> orderDtos = new ArrayList<>();
+        for (int i = 0; i < orderRepository.getOrdersByUserEmail(email).size(); i++) {
+            orderDtos.add(OrderMapper.from(orderRepository.getOrdersByUserEmail(email).get(i)));
+        }
+        return orderDtos;
+    }
+
+    public Order getOrderById(Long orderId) {
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        return orderOptional.orElse(null);
     }
 }
 

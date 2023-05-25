@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,5 +42,12 @@ public class ReviewController {
     public ResponseEntity<ReviewDto> addReview(@Valid @RequestBody ReviewDto reviewDto) {
         ReviewDto createdReview = reviewService.saveReview(reviewDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdReview);
+    }
+
+    @PostMapping("/comments")
+    public String addComments(@RequestParam(name="comments") String comments, @RequestParam(name="clothes_id") Long clothesId, Principal principal){
+        System.out.println(clothesId);
+        reviewService.addComments(comments,clothesId,principal.getName());
+        return "redirect:/order";
     }
 }

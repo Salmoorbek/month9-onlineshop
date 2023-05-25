@@ -1,6 +1,8 @@
 const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
 const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
+
+
 function removeFromCart(cartItemId) {
     if (confirm("Вы уверены, что хотите удалить этот товар из корзины?")) {
         fetch(`/carts/carts/items/remove?cartItemId=${cartItemId}`, {

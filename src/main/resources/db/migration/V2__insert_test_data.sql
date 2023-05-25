@@ -37,15 +37,6 @@ VALUES (1, 1, 2, 50000.00),
        (1, 2, 1, 35000.00),
        (2, 4, 1, 25000.00);
 
-INSERT INTO orders (user_id, status, total)
-VALUES (1, 'Pending', 100000.00),
-       (2, 'Shipped', 25000.00);
-
-INSERT INTO order_items (order_id, product_id, quantity, price)
-VALUES (1, 1, 2, 50000.00),
-       (1, 2, 1, 35000.00),
-       (2, 1, 1, 25000.00);
-
 INSERT INTO reviews (user_id, product_id, text, rating)
 VALUES (1, 1, 'Great car, very reliable.', 5),
        (2, 1, 'Decent car for the price.', 3),

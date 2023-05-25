@@ -8,6 +8,8 @@ import javax.validation.constraints.*;
 @Data
 public class OrderItemDto {
     @NotNull
+    private Long id;
+    @NotNull
     private Long orderId;
     @NotNull
     private Long productId;

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class OrderMapper {
     public static OrderDto from(Order order) {
         return OrderDto.builder()
+                .id(order.getId())
                 .userId(order.getUser().getId())
                 .createdAt(order.getCreatedAt())
                 .status(order.getStatus().name())

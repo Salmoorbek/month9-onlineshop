@@ -10,6 +10,7 @@
     <meta name="_csrf_header" content="${_csrf.headerName}" />
     <link rel="stylesheet" href="/css/product.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body>
 <div class="navbar">
@@ -23,7 +24,14 @@
     <div class="navbar-icons">
         <span id="userEmail">${userEmail}</span>
         <a href="carts"><i class="fas fa-shopping-cart"></i></a>
-        <a href="login"><i class="fas fa-sign-in-alt"></i></a>
+        <#if userEmail?has_content && userEmail != 'anonymousUser'>
+            <form action="/logout" method="post">
+                <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!'--no-token--'}"/>
+                <button type="submit"><i class="bi bi-box-arrow-right"></i></button>
+            </form>
+        <#else>
+            <a href="login"><i class="bi bi-person-fill"></i></a>
+        </#if>
     </div>
 </div>
 
