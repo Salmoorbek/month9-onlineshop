@@ -4,8 +4,30 @@
     <title>Order Items</title>
     <meta name="_csrf" content="${_csrf.token}" />
     <meta name="_csrf_header" content="${_csrf.headerName}" />
+    <link rel="stylesheet" href="/css/product.css">
 </head>
 <body>
+<div class="navbar">
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="#">Cars</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="/orders">Orders</a></li>
+    </ul>
+    <div class="navbar-icons">
+        <span id="userEmail">${userEmail}</span>
+        <a href="carts"><i class="fas fa-shopping-cart"></i></a>
+        <#if userEmail?has_content && userEmail != 'anonymousUser'>
+            <form action="/logout" method="post">
+                <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!'--no-token--'}"/>
+                <button type="submit"><i class="bi bi-box-arrow-right"></i></button>
+            </form>
+        <#else>
+            <a href="login"><i class="bi bi-person-fill"></i></a>
+        </#if>
+    </div>
+</div>
 <h1>Order Items</h1>
 
 <h2>Order ID: ${order.id}</h2>

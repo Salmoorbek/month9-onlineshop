@@ -18,7 +18,7 @@
         <li><a href="product">Cars</a></li>
         <li><a href="#">Services</a></li>
         <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="/orders">Orders</a></li>
     </ul>
     <div class="navbar-icons">
         <span id="userEmail">${userEmail}</span>
@@ -34,7 +34,6 @@
     </div>
 </div>
 
-<a href="change_password">change password</a>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>

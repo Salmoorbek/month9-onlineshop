@@ -25,7 +25,7 @@
             <input type="hidden" name="_csrf" value="${_csrf.token}" />
             <input type="text" placeholder="email address" name="email"  value="${(dto.email)!''}" required/>
             <button type="">Recover</button>
-            <p class="message">Not registered? <a href="/signup">Create an account</a></p>
+            <p class="message">Not registered? <a href="/register">Create an account</a></p>
             <p class="message"><a href="/">Go back to the home page</a></p>
         </form>
     </div>

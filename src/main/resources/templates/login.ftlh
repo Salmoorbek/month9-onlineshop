@@ -27,6 +27,7 @@
             <input type="password" placeholder="password" name="password" value=""/>
             <button>login</button>
             <p class="message">Not registered? <a href="/register">Create an account</a></p>
+            <p class="message">Not registered? <a href="/reset-password">reset password</a></p>
         </form>
     </div>
 </div>
