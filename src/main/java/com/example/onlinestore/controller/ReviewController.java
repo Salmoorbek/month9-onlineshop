@@ -45,9 +45,12 @@ public class ReviewController {
     }
 
     @PostMapping("/comments")
-    public String addComments(@RequestParam(name="comments") String comments, @RequestParam(name="clothes_id") Long clothesId, Principal principal){
-        System.out.println(clothesId);
-        reviewService.addComments(comments,clothesId,principal.getName());
-        return "redirect:/order";
+    public String addComments(@RequestParam(name="comments") String comments,
+                              @RequestParam(name="product_id") Long productId,
+                              @RequestParam(name="rating") Integer rating,
+                              Principal principal) {
+        reviewService.addComments(comments, productId, principal.getName(), rating);
+        System.out.println(comments+ productId+ principal.getName()+rating);
+        return "redirect:/orders";
     }
 }

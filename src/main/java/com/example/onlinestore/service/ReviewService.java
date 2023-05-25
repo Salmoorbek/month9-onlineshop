@@ -4,6 +4,7 @@ import com.example.onlinestore.dto.ProductDto;
 import com.example.onlinestore.dto.ReviewDto;
 import com.example.onlinestore.entity.Product;
 import com.example.onlinestore.entity.Review;
+import com.example.onlinestore.entity.User;
 import com.example.onlinestore.mapper.ReviewMapper;
 import com.example.onlinestore.repositories.ProductRepository;
 import com.example.onlinestore.repositories.ReviewRepository;
@@ -60,7 +61,7 @@ public class ReviewService {
         return ReviewMapper.from(savedReview);
     }
 
-    public void addComments(String comments, Long clothesId, String name) {
+    public void addComments(String comments, Long clothesId, String name, Integer rating) {
         var user = userService.getUserByEmail(name);
         Optional<Product> optionalProduct = productRepository.findById(clothesId);
 
@@ -70,7 +71,7 @@ public class ReviewService {
                     .product(product)
                     .user(user)
                     .createdAt(LocalDateTime.now())
-                    .rating(5)
+                    .rating(rating)
                     .build();
             reviewRepository.save(com);
         });
