@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
@@ -61,9 +62,9 @@ public class ReviewService {
         return ReviewMapper.from(savedReview);
     }
 
-    public void addComments(String comments, Long clothesId, String name, Integer rating) {
+    public void addComments(String comments, Long carsId, String name, Integer rating) {
         var user = userService.getUserByEmail(name);
-        Optional<Product> optionalProduct = productRepository.findById(clothesId);
+        Optional<Product> optionalProduct = productRepository.findById(carsId);
 
         optionalProduct.ifPresent(product -> {
             var com = Review.builder()
@@ -75,5 +76,12 @@ public class ReviewService {
                     .build();
             reviewRepository.save(com);
         });
+    }
+
+    public List<ReviewDto> getAllReview() {
+        List<Review> reviews = reviewRepository.findAll();
+        return reviews.stream()
+                .map(ReviewMapper::from)
+                .collect(Collectors.toList());
     }
 }

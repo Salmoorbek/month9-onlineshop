@@ -29,6 +29,12 @@ public class ProductService {
         Page<Product> products = productRepository.findAllByOrderByNameAsc(pageable);
         return products.map(ProductMapper::from);
     }
+    public List<ProductDto> getAllProductsList() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .map(ProductMapper::from)
+                .collect(Collectors.toList());
+    }
 
     public Page<ProductDto> getProductsSortedByPrice(Pageable pageable) {
         Page<Product> products = productRepository.findAllByOrderByPriceAsc(pageable);
@@ -68,5 +74,21 @@ public class ProductService {
     public ProductDto getProductDtoById(Long productId) {
         return ProductMapper.from(productRepository.findById(productId)
                 .orElseThrow(() -> new NoSuchElementException("Product not found with id: " + productId)));
+    }
+
+    public List<ProductDto> getProductsByIds(List<Long> productIds) {
+        List<Product> products = productRepository.findByIdIn(productIds);
+
+        List<ProductDto> productDtos = new ArrayList<>();
+        for (Product product : products) {
+            ProductDto productDto = ProductDto.builder()
+                    .id(product.getId())
+                    .imageUrl(product.getImageUrl())
+                    .name(product.getName())
+                    .build();
+            productDtos.add(productDto);
+        }
+
+        return productDtos;
     }
 }

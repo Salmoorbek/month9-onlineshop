@@ -39,5 +39,6 @@ VALUES (1, 1, 2, 50000.00),
 
 INSERT INTO reviews (user_id, product_id, text, rating)
 VALUES (1, 1, 'Great car, very reliable.', 5),
-       (2, 1, 'Decent car for the price.', 3),
-       (2, 2, 'Awesome car, love it!', 5);
+       (2, 6, 'Decent car for the price.', 3),
+       (2, 9, 'Decent car for the price.', 3),
+       (2, 4, 'Awesome car, love it!', 5);

@@ -23,7 +23,7 @@
     </ul>
     <div class="navbar-icons">
         <span id="userEmail">${userEmail}</span>
-        <a href="carts"><i class="fas fa-shopping-cart"></i></a>
+        <a href="/carts"><i class="fas fa-shopping-cart"></i></a>
         <#if userEmail?has_content && userEmail != 'anonymousUser'>
             <form action="/logout" method="post">
                 <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!'--no-token--'}"/>
