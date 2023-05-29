@@ -79,11 +79,10 @@ public class OrderController {
         User user = userService.getUserByEmail(principal.getName());
 
         List<CartItem> cartItems = cartService.getCartItemsForUser(user);
-
         Order order = orderService.createOrder(user, cartItems);
 
-        cartService.clearCartForUser(user);
-
+        cartService.clearCartForUser(user.getEmail());
+        System.out.println("==================");
         return "redirect:/orders/" + order.getId();
     }
     @GetMapping("/orders/{id}")

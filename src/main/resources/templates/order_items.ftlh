@@ -8,9 +8,9 @@
 <div class="navbar">
     <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="#">Cars</a></li>
+        <li><a href="/product">Cars</a></li>
         <li><a href="#">Services</a></li>
-        <li><a href="#">About</a></li>
+        <li><a href="/reviews">Comments</a></li>
         <li><a href="/orders">Orders</a></li>
     </ul>
     <div class="navbar-icons">
@@ -22,15 +22,11 @@
                 <button type="submit"><i class="bi bi-box-arrow-right"></i></button>
             </form>
         <#else>
-            <a href="login"><i class="bi bi-person-fill"></i></a>
+            <a href="/login"><i class="bi bi-person-fill"></i></a>
         </#if>
     </div>
 </div>
 <h1>Order Items</h1>
-
-<h2>Order ID: ${order.id}</h2>
-<h3>User Email: ${userEmail}</h3>
-
 <table>
     <tr>
         <th>Product Name</th>
@@ -56,44 +52,8 @@
             </td>
             <td style="vertical-align: middle;">${orderItem.quantity}</td>
             <td style="vertical-align: middle;">${orderItem.price}</td>
-            <td style="vertical-align: middle;">
-                <form id="commentForm" action="/comments/add" method="post">
-                    <input type="hidden" name="product_id" value="${orderItem.productId}">
-                    <input type="text" name="comments" placeholder="Enter your comment" required>
-                    <input type="number" name="rating" placeholder="Enter your rating" min="1" max="5" required>
-                    <button type="submit">Add Comment</button>
-                </form>
-            </td>
         </tr>
     </#list>
 </table>
-<script>
-    function addComment(event) {
-        event.preventDefault();
-        if (confirm("Вы уверены, что хотите добавить комментарий?")) {
-            var commentForm = document.getElementById("commentForm");
-            var formData = new FormData(commentForm);
-
-            fetch("/comments/add", {
-                method: "POST",
-                body: formData
-            })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = "/orders";
-                    } else {
-                        throw new Error("Ошибка при добавлении комментария");
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }
-    }
-
-    var commentForm = document.getElementById("commentForm");
-    commentForm.addEventListener("submit", addComment);
-</script>
-
 </body>
 </html>

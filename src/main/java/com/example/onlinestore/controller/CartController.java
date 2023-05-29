@@ -3,10 +3,13 @@ package com.example.onlinestore.controller;
 import com.example.onlinestore.dto.CartDto;
 import com.example.onlinestore.dto.CartItemDto;
 import com.example.onlinestore.dto.ProductDto;
+import com.example.onlinestore.dto.UserDto;
+import com.example.onlinestore.entity.User;
 import com.example.onlinestore.service.CartItemService;
 import com.example.onlinestore.service.CartService;
 
 import com.example.onlinestore.service.ProductService;
+import com.example.onlinestore.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -40,7 +43,6 @@ public class CartController {
         }
 
         CartDto cart = (CartDto) session.getAttribute("cart");
-
         if (cart == null) {
             cart = cartService.getCartByUserEmail(userEmail);
             session.setAttribute("cart", cart);

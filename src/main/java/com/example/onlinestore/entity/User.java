@@ -39,8 +39,6 @@ public class User implements UserDetails {
     private boolean enabled;
     @Column(name = "role")
     private String role;
-    @Column(name = "reset_token")
-    private String resetToken;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

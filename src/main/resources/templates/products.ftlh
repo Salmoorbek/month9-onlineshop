@@ -18,7 +18,7 @@
         <li><a href="/">Home</a></li>
         <li><a href="#">Cars</a></li>
         <li><a href="#">Services</a></li>
-        <li><a href="#">About</a></li>
+        <li><a href="/reviews">Comments</a></li>
         <li><a href="/orders">Orders</a></li>
     </ul>
     <div class="navbar-icons">
@@ -30,7 +30,7 @@
                 <button type="submit"><i class="bi bi-box-arrow-right"></i></button>
             </form>
         <#else>
-            <a href="login"><i class="bi bi-person-fill"></i></a>
+            <a href="/login"><i class="bi bi-person-fill"></i></a>
         </#if>
     </div>
 </div>

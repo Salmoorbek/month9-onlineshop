@@ -1,6 +1,7 @@
 package com.example.onlinestore.service;
 
 import com.example.onlinestore.dto.CartDto;
+import com.example.onlinestore.dto.UserRegisterDto;
 import com.example.onlinestore.entity.Cart;
 import com.example.onlinestore.entity.CartItem;
 import com.example.onlinestore.entity.Product;
@@ -12,10 +13,7 @@ import com.example.onlinestore.repositories.ProductRepository;
 import com.example.onlinestore.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CartService {
@@ -23,16 +21,18 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final UserService userService;
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
-    public CartService(CartRepository cartRepository, CartItemRepository cartItemRepository, UserService userService, ProductRepository productRepository) {
+    public CartService(CartRepository cartRepository, CartItemRepository cartItemRepository, UserService userService, ProductRepository productRepository, UserRepository userRepository) {
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
         this.userService = userService;
         this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
 
     public CartDto getCartByUserEmail(String email) {
-        return CartMapper.from(Objects.requireNonNull(cartRepository.findCartByUser(email).orElse(null)));
+        return CartMapper.from(cartRepository.getCartByUserEmail(email));
     }
 
     public void removeItemFromCart(String userEmail, Long cartItemId) {
@@ -100,13 +100,30 @@ public class CartService {
         }
     }
 
-    public void clearCartForUser(User user) {
-        Cart cart = cartRepository.findByUser(user).orElse(null);
+    public void clearCartForUser(String userEmail) {
+        Cart cart = cartRepository.findByUserEmail(userEmail);
         if (cart != null) {
-            List<CartItem> cartItems = cart.getCartItems();
-            cartItems.clear();
+            List<CartItem> cartItems = new ArrayList<>(cart.getCartItems()); // Создаем копию списка элементов корзины
+            for (CartItem cartItem : cartItems) {
+                cart.getCartItems().remove(cartItem);
+                cartItemRepository.delete(cartItem);
+            }
+        }
+    }
+
+    public void createCart(UserRegisterDto userRegisterDto) {
+        Optional<User> optionalUser = userRepository.findByEmail(userRegisterDto.getEmail());
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Cart cart = new Cart();
+            cart.setUser(user);
+            cart.setCartItems(null);
             cartRepository.save(cart);
         }
+    }
+
+    public CartDto getCartByUser(User user) {
+        return CartMapper.from(cartRepository.getCartByUser(user));
     }
 }
 

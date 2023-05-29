@@ -1,6 +1,9 @@
 package com.example.onlinestore.controller;
 
+import com.example.onlinestore.dto.CartDto;
 import com.example.onlinestore.dto.UserRegisterDto;
+import com.example.onlinestore.entity.User;
+import com.example.onlinestore.service.CartService;
 import com.example.onlinestore.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,9 +21,11 @@ import javax.validation.Valid;
 @Controller
 public class UserController {
     private final UserService userService;
+    private final CartService cartService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, CartService cartService) {
         this.userService = userService;
+        this.cartService = cartService;
     }
 
     @GetMapping("/login")
@@ -51,8 +56,8 @@ public class UserController {
             attributes.addFlashAttribute("errors", validationResult.getFieldErrors());
             return "redirect:/register";
         }
-
         userService.createUser(user);
+        cartService.createCart(user);
         return "redirect:/login";
     }
 

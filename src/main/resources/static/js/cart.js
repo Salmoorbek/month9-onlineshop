@@ -68,9 +68,13 @@ function createOrder() {
             })
             .catch(error => {
                 console.error(error);
+            })
+            .finally(() => {
+                location.reload();
             });
     }
 }
+
 
 const quantityInputs = document.querySelectorAll('.quantity-input');
 quantityInputs.forEach(input => {
