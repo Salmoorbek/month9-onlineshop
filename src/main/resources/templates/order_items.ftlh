@@ -29,10 +29,10 @@
 <h1>Order Items</h1>
 <table>
     <tr>
+        <th>Image</th>
         <th>Product Name</th>
         <th>Quantity</th>
         <th>Price</th>
-        <th>Add Comment</th>
     </tr>
     <#list orderItems as orderItem>
         <tr>
